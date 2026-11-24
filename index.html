@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เวลาที่เรายังคงรอ</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at top,#38233b,#15121b 58%);font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;color:#fff}.card{width:min(100%,440px);padding:30px 22px;border:1px solid #76516d;border-radius:26px;background:#211b28eF;box-shadow:0 18px 60px #0008;text-align:center}.heart{font-size:38px;color:#f18bb8}.eyebrow{color:#d7b5c9;font-size:14px}.title{font-size:25px;font-weight:700;margin:8px 0 22px}.timer{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.unit{background:#34283a;border-radius:14px;padding:14px 4px}.num{font-variant-numeric:tabular-nums;font-size:clamp(22px,7vw,32px);font-weight:750;color:#ffafd0}.label{font-size:12px;color:#d6c5d4;margin-top:4px}.since{margin-top:24px;font-size:13px;color:#cbb8c9;line-height:1.7}.quote{margin-top:20px;color:#f0c9dc;font-size:14px}.actions{margin-top:22px}button{border:1px solid #9b718e;border-radius:999px;padding:10px 18px;background:transparent;color:#f5d7e7;font-size:14px}button:active{background:#493348}.note{font-size:11px;color:#a996a8;margin-top:14px}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="heart">♥</div>
+<div class="eyebrow">นับเวลาตั้งแต่เริ่มต้น</div>
+<div class="title">เวลาที่เรายังคงรอ</div>
+<div class="timer" aria-live="off">
+ <div class="unit"><div class="num" id="days">0</div><div class="label">วัน</div></div>
+ <div class="unit"><div class="num" id="hours">00</div><div class="label">ชั่วโมง</div></div>
+ <div class="unit"><div class="num" id="minutes">00</div><div class="label">นาที</div></div>
+ <div class="unit"><div class="num" id="seconds">00</div><div class="label">วินาที</div></div>
+</div>
+<div class="since">เริ่มนับตั้งแต่<br><strong>24 พฤศจิกายน 2026 เวลา 23:19:55 น.</strong><br>เวลาไทย (UTC+7)</div>
+<div class="quote">“ยังมีความหวัง และจะไม่ลืมดูแลหัวใจตัวเอง”</div>
+<div class="actions"><button id="reset" type="button">เริ่มนับใหม่จากตอนนี้</button></div>
+<div class="note">เวลาเดินต่อแม้ปิดแท็บหรือรีเฟรชหน้า ตราบใดที่เปิดไฟล์นี้ในเบราว์เซอร์เดิม</div>
+</main>
+<script>
+const KEY='waiting_timer_start_v1';
+const initial=Date.parse('2026-11-24T23:19:55+07:00');
+if(!localStorage.getItem(KEY)) localStorage.setItem(KEY,String(initial));
+const pad=n=>String(n).padStart(2,'0');
+function tick(){let elapsed=Math.max(0,Date.now()-Number(localStorage.getItem(KEY)||initial));let s=Math.floor(elapsed/1000);let d=Math.floor(s/86400);s%=86400;let h=Math.floor(s/3600);s%=3600;let m=Math.floor(s/60);s%=60;document.getElementById('days').textContent=d;document.getElementById('hours').textContent=pad(h);document.getElementById('minutes').textContent=pad(m);document.getElementById('seconds').textContent=pad(s)}
+document.getElementById('reset').addEventListener('click',()=>{if(confirm('เริ่มนับเวลาใหม่จากตอนนี้ใช่ไหม?')){localStorage.setItem(KEY,String(Date.now()));tick();}});
+tick();setInterval(tick,250);
+</script>
+</body></html>
